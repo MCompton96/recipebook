@@ -1,4 +1,6 @@
 import {
+  Card,
+  CardHeader,
   CardMedia,
   Container,
   Divider,
@@ -20,11 +22,14 @@ import {
 import { useFetchRecipe } from "./hooks";
 import Ingredients from "./Ingredients";
 import RecipeStats from "./RecipeStats";
+import Method from "./Method";
 
 export default function Recipe() {
   const { recipeId } = useParams<{ recipeId: string }>();
   const { data: recipe, isLoading } = useFetchRecipe(recipeId);
   const theme = useTheme();
+
+  console.log(recipe);
 
   return (
     <>
@@ -82,6 +87,9 @@ export default function Recipe() {
               </Grid>
               <Grid item xs={12}>
                 <Ingredients ingredients={recipe.ingredients} />
+              </Grid>
+              <Grid item xs={12}>
+                <Method steps={recipe.method} />
               </Grid>
             </Grid>
           </Container>
