@@ -1,12 +1,15 @@
 import { InputAdornment } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from "react";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 
 import { StyledOutlinedInput } from "src/common/styled-components/inputs";
 
-export default function AllRecipesSearch() {
-  const [search, setSearch] = useState<string>("");
+type Props = {
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+};
 
+export default function AllRecipesSearch({ search, setSearch }: Props) {
   return (
     <StyledOutlinedInput
       type="text"

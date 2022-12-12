@@ -1,13 +1,16 @@
 import { Typography, Grid } from "@mui/material";
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import PageStructure from "src/layouts/PageStructure/PageStructure";
 
 import AllRecipesContent from "./AllRecipesContent";
 import AllRecipesSearch from "./AllRecipesSearch";
 import { useFetchRecipes } from "./hooks";
+import { filterRecipes } from "./utils";
 
 export default function AllRecipes() {
   const { data: recipes, isLoading } = useFetchRecipes();
+  const [search, setSearch] = useState<string>("");
 
   return (
     <>
@@ -17,12 +20,14 @@ export default function AllRecipes() {
       {isLoading ? (
         <Typography variant="h6">Loading...</Typography>
       ) : (
-        <PageStructure title={`👨‍🍳 All Recipes (${recipes.length})`}>
+        <PageStructure
+          title={`👨‍🍳 All Recipes (${filterRecipes(recipes, search).length})`}
+        >
           <Grid item xs={12}>
-            <AllRecipesSearch />
+            <AllRecipesSearch search={search} setSearch={setSearch} />
           </Grid>
           <Grid item xs={12}>
-            <AllRecipesContent recipes={recipes} />
+            <AllRecipesContent recipes={filterRecipes(recipes, search)} />
           </Grid>
         </PageStructure>
       )}
