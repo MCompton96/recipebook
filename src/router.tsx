@@ -26,6 +26,12 @@ const Dashboard = Loader(lazy(() => import("src/components/Dashboard")));
 const AllRecipes = Loader(lazy(() => import("src/components/AllRecipes")));
 const Recipe = Loader(lazy(() => import("src/components/Recipe")));
 
+// Collections
+const Collections = Loader(lazy(() => import("src/components/Collections")));
+
+// Explore
+const Explore = Loader(lazy(() => import("src/components/Explore")));
+
 // Applications
 
 const Messenger = Loader(
@@ -153,6 +159,26 @@ const routes: RouteObject[] = [
       {
         path: ":recipeId",
         element: <Recipe />,
+      },
+    ],
+  },
+  {
+    path: "collections",
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: "",
+        element: <Collections />,
+      },
+    ],
+  },
+  {
+    path: "explore",
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: "",
+        element: <Explore />,
       },
     ],
   },

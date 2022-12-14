@@ -1,5 +1,5 @@
-import { useContext } from "react";
-
+import { useCallback, useContext } from "react";
+import { sample } from "lodash";
 import {
   ListSubheader,
   alpha,
@@ -9,14 +9,13 @@ import {
   Button,
   ListItem,
 } from "@mui/material";
-import { NavLink as RouterLink } from "react-router-dom";
+import { NavLink as RouterLink, useNavigate } from "react-router-dom";
 import { SidebarContext } from "src/contexts/SidebarContext";
 
 import AssignmentTwoToneIcon from "@mui/icons-material/AssignmentTwoTone";
 import CollectionsBookmarkTwoToneIcon from "@mui/icons-material/CollectionsBookmarkTwoTone";
 import TravelExploreTwoToneIcon from "@mui/icons-material/TravelExploreTwoTone";
 import CasinoTwoToneIcon from "@mui/icons-material/CasinoTwoTone";
-import TableChartTwoToneIcon from "@mui/icons-material/TableChartTwoTone";
 import AccountCircleTwoToneIcon from "@mui/icons-material/AccountCircleTwoTone";
 import BallotTwoToneIcon from "@mui/icons-material/BallotTwoTone";
 import BeachAccessTwoToneIcon from "@mui/icons-material/BeachAccessTwoTone";
@@ -32,6 +31,7 @@ import ChromeReaderModeTwoToneIcon from "@mui/icons-material/ChromeReaderModeTwo
 import WorkspacePremiumTwoToneIcon from "@mui/icons-material/WorkspacePremiumTwoTone";
 import CameraFrontTwoToneIcon from "@mui/icons-material/CameraFrontTwoTone";
 import DisplaySettingsTwoToneIcon from "@mui/icons-material/DisplaySettingsTwoTone";
+import { useFetchRecipes } from "src/components/AllRecipes/hooks";
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -177,6 +177,13 @@ const SubMenuWrapper = styled(Box)(
 
 function SidebarMenu() {
   const { closeSidebar } = useContext(SidebarContext);
+  const { data: recipes, isLoading } = useFetchRecipes();
+  const navigate = useNavigate();
+
+  const handleRandom = useCallback(() => {
+    const recipe = sample(recipes);
+    navigate(`/recipes/${recipe.id}`);
+  }, [recipes, isLoading, navigate]);
 
   return (
     <>
@@ -206,8 +213,7 @@ function SidebarMenu() {
                 <Button
                   disableRipple
                   component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/dashboards/messenger"
+                  to="/collections"
                   startIcon={<CollectionsBookmarkTwoToneIcon />}
                 >
                   Collections
@@ -218,7 +224,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/dashboards/messenger"
+                  to="/explore"
                   startIcon={<TravelExploreTwoToneIcon />}
                 >
                   Explore
@@ -227,9 +233,7 @@ function SidebarMenu() {
               <ListItem component="div">
                 <Button
                   disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/dashboards/messenger"
+                  onClick={handleRandom}
                   startIcon={<CasinoTwoToneIcon />}
                 >
                   Random
